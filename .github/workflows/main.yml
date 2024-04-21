@@ -10,7 +10,6 @@ jobs:
         with:
           oauth-client-id: ${{ secrets.TAILSCALE_OAUTH_CLIENT }}
           oauth-secret: ${{ secrets.TAILSCALE_OAUTH_SECRET }}
-          tags: tag:ci
       - name: Wait for 10s
         run: sleep 10
       - name: Ping ip
