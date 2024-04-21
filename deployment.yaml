@@ -9,6 +9,7 @@ spec:
   containers:
     - name: main-app
       image: abdullahi1/dotnetexperiments:latest
+      imagePullPolicy: Always
       ports:
         - containerPort: 5000
 
