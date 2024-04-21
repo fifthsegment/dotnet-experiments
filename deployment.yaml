@@ -3,7 +3,7 @@ apiVersion: v1
 metadata:
   name: main-app
   labels:
-    app: mainapp
+    app: main-app
 spec:
   containers:
     name: main-app
