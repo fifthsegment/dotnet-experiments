@@ -46,22 +46,22 @@ jobs:
         run: sleep 2
 
       - name: Ping ip
-        run: ping -c 2 {{ vars.KUBERNETES_VM_HOST }}
+        run: ping -c 2 {{ env.KUBERNETES_VM_HOST }}
 
       - name: Write SSH key to file
         run: echo "${{ secrets.SSH_PRIVATE_KEY }}" > id_rsa && chmod 600 id_rsa
 
       - name: SSH into server and test if it works
-        run: ssh -i id_rsa -o StrictHostKeyChecking=no abdullah@{{ vars.KUBERNETES_VM_HOST }} 'ls'
+        run: ssh -i id_rsa -o StrictHostKeyChecking=no abdullah@{{ env.KUBERNETES_VM_HOST }} 'ls'
 
       - name: Copy deployment.yaml
-        run: scp -i id_rsa -o StrictHostKeyChecking=no deployment.yaml abdullah@{{ vars.KUBERNETES_VM_HOST }}:/home/abdullah/deployment.yaml
+        run: scp -i id_rsa -o StrictHostKeyChecking=no deployment.yaml abdullah@{{ env.KUBERNETES_VM_HOST }}:/home/abdullah/deployment.yaml
 
       - name: Run deployment
-        run: ssh -i id_rsa -o StrictHostKeyChecking=no abdullah@{{ vars.KUBERNETES_VM_HOST }} 'sudo kubectl apply'
+        run: ssh -i id_rsa -o StrictHostKeyChecking=no abdullah@{{ env.KUBERNETES_VM_HOST }} 'sudo kubectl apply'
 
       - name: Get running pods
-        run: ssh -i id_rsa -o StrictHostKeyChecking=no abdullah@${{ vars.KUBERNETES_VM_HOST }} 'sudo kubectl get pods
+        run: ssh -i id_rsa -o StrictHostKeyChecking=no abdullah@${{ env.KUBERNETES_VM_HOST }} 'sudo kubectl get pods
 
         
 
