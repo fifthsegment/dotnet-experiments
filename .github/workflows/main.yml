@@ -10,11 +10,10 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -t dotnetexperiments .
-          docker tag abdullahi1/dotnetexperiments
+          docker build -t abdullahi1/dotnetexperiments:latest .
 
       - name: Run Docker container
-        run: docker run -d -p 5000:5000 dotnetexperiments
+        run: docker run -d -p 5000:5000 abdullahi1/dotnetexperiments:latest
 
       - name: Wait for container to start
         run: sleep 5
@@ -31,7 +30,7 @@ jobs:
 
       - name: Check client id
         run: echo ${{ secrets.TAILSCALE_OAUTH_CLIENT }}
-        
+
       - name: Tailscale
         uses: tailscale/github-action@v2
         with:
