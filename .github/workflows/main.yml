@@ -63,6 +63,9 @@ jobs:
       - name: Run deployment
         run: ssh -i id_rsa -o StrictHostKeyChecking=no $KUBERNETES_HOST_USERNAME@$KUBERNETES_VM_HOST 'sudo kubectl apply --force --overwrite -f /home/abdullah/deployment.yaml'
 
+      - name: Delete existing pods
+        run: ssh -i id_rsa -o StrictHostKeyChecking=no $KUBERNETES_HOST_USERNAME@$KUBERNETES_VM_HOST 'sudo kubectl delete pods --all'
+
       - name: Get running pods
         run: ssh -i id_rsa -o StrictHostKeyChecking=no $KUBERNETES_HOST_USERNAME@$KUBERNETES_VM_HOST 'sudo kubectl get pods'
 
