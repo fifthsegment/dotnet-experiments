@@ -5,6 +5,8 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
+      - name: Check client id
+        run: echo ${{ secrets.TAILSCALE_OAUTH_CLIENT }}
       - name: Tailscale
         uses: tailscale/github-action@v2
         with:
