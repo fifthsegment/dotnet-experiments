@@ -10,12 +10,11 @@ jobs:
       - name: Tailscale
         uses: tailscale/github-action@v2
         with:
-          #authkey: ${{ secrets.TAILSCALE_AUTHKEY }}
           tags: tag:ci
           oauth-client-id: ${{ secrets.TAILSCALE_OAUTH_CLIENT }}
           oauth-secret: ${{ secrets.TAILSCALE_OAUTH_SECRET }}
-      - name: Wait for 10s
-        run: sleep 10
+      - name: Wait for 5s
+        run: sleep 5
       - name: Ping ip
-        run: ping 10.1.0.10
+        run: ping -c 2 10.1.0.10 
 
