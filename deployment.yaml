@@ -1,12 +1,12 @@
 kind: Pod
 apiVersion: v1
 metadata:
-  name: foo-app
+  name: main-app
   labels:
-    app: foo
+    app: mainapp
 spec:
   containers:
-    name: foo-app
+    name: main-app
     image: abdullahi1/dotnetexperiments:latest
     ports:
       - containerPort: 5000
@@ -14,10 +14,10 @@ spec:
 kind: Service
 apiVersion: v1
 metadata:
-  name: foo-service
+  name: main-service
 spec:
   selector:
-    app: foo
+    app: main-app
   ports:
   # Default port used by the image
   - port: 5000
@@ -53,6 +53,8 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: example-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
 spec:
   rules:
   - http:
@@ -61,7 +63,7 @@ spec:
         path: /foo(/|$)(.*)
         backend:
           service:
-            name: foo-service
+            name: main-service
             port:
               number: 5000
       - pathType: Prefix
@@ -71,6 +73,5 @@ spec:
             name: bar-service
             port:
               number: 8080
-
 ---
 
