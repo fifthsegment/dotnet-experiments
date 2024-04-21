@@ -1,17 +1,26 @@
-# Pod definition
-kind: Pod
-apiVersion: v1
+# Deployment definition
+apiVersion: apps/v1
+kind: Deployment
 metadata:
-  name: main-app
-  labels:
-    app: main-app
+  name: my-deployment
 spec:
-  containers:
-    - name: main-app
-      image: abdullahi1/dotnetexperiments:latest
-      imagePullPolicy: Always
-      ports:
-        - containerPort: 5000
+  replicas: 3
+  selector:
+    matchLabels:
+      app: main-app
+  template:
+    metadata:
+      labels:
+        app: main-app
+    spec:
+      containers:
+        - name: main-app
+          image: abdullahi1/dotnetexperiments:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 5000
+  strategy:
+    type: Recreate
 
 ---
 
