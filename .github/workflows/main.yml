@@ -8,10 +8,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Install SSH key
-        uses: webfactory/ssh-agent@v0.5.4
-        with:
-          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+      #- name: Install SSH key
+      #  uses: webfactory/ssh-agent@v0.5.4
+      #  with:
+      #    ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
       - name: Build Docker image
         run: |
@@ -47,8 +47,11 @@ jobs:
       - name: Ping ip
         run: ping -c 2 10.1.0.120 
 
+      - name: Write SSH key to file
+        run: echo "${{ secrets.SSH_PRIVATE_KEY }}" > id_rsa && chmod 600 id_rsa
+
       - name: SSH into server and test if it works
-        run: ssh abdullah@10.1.0.120 'ls'
+        run: ssh -i id_rsa abdullah@10.1.0.120 'ls'
 
 
 
