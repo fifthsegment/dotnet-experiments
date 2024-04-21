@@ -5,6 +5,7 @@ jobs:
   test:
     env:
       KUBERNETES_VM_HOST: "10.1.0.120"
+      KUBERNETES_HOST_USERNAME: "abdullah"
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -54,16 +55,16 @@ jobs:
         run: echo "${{ secrets.SSH_PRIVATE_KEY }}" > id_rsa && chmod 600 id_rsa
 
       - name: SSH into server and test if it works
-        run: ssh -i id_rsa -o StrictHostKeyChecking=no abdullah@$KUBERNETES_VM_HOST 'ls'
+        run: ssh -i id_rsa -o StrictHostKeyChecking=no $KUBERNETES_HOST_USERNAME@$KUBERNETES_VM_HOST 'ls'
 
       - name: Copy deployment.yaml
-        run: scp -i id_rsa -o StrictHostKeyChecking=no deployment.yaml abdullah@$KUBERNETES_VM_HOST:/home/abdullah/deployment.yaml
+        run: scp -i id_rsa -o StrictHostKeyChecking=no deployment.yaml $KUBERNETES_HOST_USERNAME@$KUBERNETES_VM_HOST:/home/abdullah/deployment.yaml
 
       - name: Run deployment
-        run: ssh -i id_rsa -o StrictHostKeyChecking=no abdullah@$KUBERNETES_VM_HOST 'sudo kubectl apply -f /home/abdullah/deployment.yaml'
+        run: ssh -i id_rsa -o StrictHostKeyChecking=no $KUBERNETES_HOST_USERNAME@$KUBERNETES_VM_HOST 'sudo kubectl apply -f /home/abdullah/deployment.yaml'
 
       - name: Get running pods
-        run: ssh -i id_rsa -o StrictHostKeyChecking=no abdullah@$KUBERNETES_VM_HOST 'sudo kubectl get pods
+        run: ssh -i id_rsa -o StrictHostKeyChecking=no $KUBERNETES_HOST_USERNAME@$KUBERNETES_VM_HOST 'sudo kubectl get pods'
 
         
 
