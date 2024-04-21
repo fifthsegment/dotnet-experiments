@@ -57,7 +57,7 @@ jobs:
         run: scp -i id_rsa -o StrictHostKeyChecking=no deployment.yaml abdullah@10.1.0.120:/home/abdullah/deployment.yaml
 
       - name: Run deployment
-        run: ssh -i id_rsa -o StrictHostKeyChecking=no abdullah@10.1.0.120 'sudo -s && kubectl apply'
+        run: ssh -i id_rsa -o StrictHostKeyChecking=no abdullah@10.1.0.120 'su - && kubectl apply'
 
 
         
