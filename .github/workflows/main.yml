@@ -51,7 +51,7 @@ jobs:
         run: echo "${{ secrets.SSH_PRIVATE_KEY }}" > id_rsa && chmod 600 id_rsa
 
       - name: SSH into server and test if it works
-        run: ssh -i id_rsa abdullah@10.1.0.120 'ls'
+        run: ssh -i id_rsa -o StrictHostKeyChecking=no abdullah@10.1.0.120 'ls'
 
 
 
