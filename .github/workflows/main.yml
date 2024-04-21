@@ -1,0 +1,14 @@
+name: CI
+on:
+  push:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Install Tailscale
+        run: sudo apt-get install -y tailscale
+      - name: Start tailscaled
+        run: sudo systemctl start tailscaled
+      - name: Check tailscaled status
+        run: sudo systemctl status tailscaled
