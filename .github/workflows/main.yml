@@ -46,7 +46,7 @@ jobs:
         run: sleep 2
 
       - name: Ping ip
-        run: ping -c 2 $KUBERNETES_VM_HOST
+        run: ping -c 2 {{ env.KUBERNETES_VM_HOST }}
 
       - name: Write SSH key to file
         run: echo "${{ secrets.SSH_PRIVATE_KEY }}" > id_rsa && chmod 600 id_rsa
