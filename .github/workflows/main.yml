@@ -26,7 +26,7 @@ jobs:
         run: echo "${{ secrets.DOCKER_HUB_TOKEN }}" | docker login -u "${{ secrets.DOCKER_HUB_USERNAME }}" --password-stdin
       # Push the Docker image
       - name: Push Docker image to registry
-        run: docker push abdullahi1/dotnetexperiments:main
+        run: docker push abdullahi1/dotnetexperiments:latest
 
       - name: Check client id
         run: echo ${{ secrets.TAILSCALE_OAUTH_CLIENT }}
