@@ -42,8 +42,9 @@ jobs:
           tags: tag:ci
           oauth-client-id: ${{ secrets.TAILSCALE_OAUTH_CLIENT }}
           oauth-secret: ${{ secrets.TAILSCALE_OAUTH_SECRET }}
-      - name: Wait for 5s
-        run: sleep 5
+      - name: Wait for a few seconds
+        run: sleep 2
+
       - name: Ping ip
         run: ping -c 2 10.1.0.120 
 
@@ -57,7 +58,7 @@ jobs:
         run: scp -i id_rsa -o StrictHostKeyChecking=no deployment.yaml abdullah@10.1.0.120:/home/abdullah/deployment.yaml
 
       - name: Run deployment
-        run: ssh -i id_rsa -o StrictHostKeyChecking=no abdullah@10.1.0.120 'su - && kubectl apply'
+        run: ssh -i id_rsa -o StrictHostKeyChecking=no abdullah@10.1.0.120 'sudo -i && kubectl apply'
 
 
         
