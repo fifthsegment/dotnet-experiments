@@ -60,7 +60,7 @@ jobs:
         run: scp -i id_rsa -o StrictHostKeyChecking=no deployment.yaml abdullah@$KUBERNETES_VM_HOST:/home/abdullah/deployment.yaml
 
       - name: Run deployment
-        run: ssh -i id_rsa -o StrictHostKeyChecking=no abdullah@$KUBERNETES_VM_HOST 'sudo kubectl apply'
+        run: ssh -i id_rsa -o StrictHostKeyChecking=no abdullah@$KUBERNETES_VM_HOST 'sudo kubectl apply -f /home/abdullah/deployment.yaml'
 
       - name: Get running pods
         run: ssh -i id_rsa -o StrictHostKeyChecking=no abdullah@$KUBERNETES_VM_HOST 'sudo kubectl get pods
