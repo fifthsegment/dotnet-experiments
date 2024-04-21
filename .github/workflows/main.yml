@@ -5,10 +5,14 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
+      - name: Tailscale
+        uses: tailscale/github-action@v2
+        with:
+          oauth-client-id: ${{ secrets.TAILSCALE_OAUTH_CLIENT }}
+          oauth-secret: ${{ secrets.TAILSCALE_OAUTH_SECRET }}
+          tags: tag:ci
+      - name: Wait for 10s
+        run: sleep 10
+      - name: Ping ip
+        run: ping 10.1.0.10
 
-      - name: Install Tailscale
-        run: sudo apt-get install -y tailscale
-      - name: Start tailscaled
-        run: sudo systemctl start tailscaled
-      - name: Check tailscaled status
-        run: sudo systemctl status tailscaled
