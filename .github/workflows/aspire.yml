@@ -40,7 +40,7 @@ jobs:
         run: scp -i id_rsa -o StrictHostKeyChecking=no repo.zip $KUBERNETES_HOST_USERNAME@$KUBERNETES_VM_HOST:/home/abdullah/repo
 
       - name: Extract
-        run: ssh -i id_rsa -o StrictHostKeyChecking=no $KUBERNETES_HOST_USERNAME@$KUBERNETES_VM_HOST 'cd /home/abdullah/repo && unzip repo.zip && chmod +x deployer.sh && ls'
+        run: ssh -i id_rsa -o StrictHostKeyChecking=no $KUBERNETES_HOST_USERNAME@$KUBERNETES_VM_HOST 'cd /home/abdullah/repo && unzip repo.zip && chmod +x deployer.sh && ls && echo ${{ secrets.ASPIRE_PASSWORD }} > temp_pass.txt'
 
       - name: Run deployer
         run: ssh -i id_rsa -o StrictHostKeyChecking=no $KUBERNETES_HOST_USERNAME@$KUBERNETES_VM_HOST 'cd /home/abdullah/repo && ASPIRE_PASSWORD=${{ secrets.ASPIRE_PASSWORD }} sudo /home/abdullah/repo/deployer.sh'
