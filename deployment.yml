@@ -18,7 +18,7 @@ spec:
                 port:
                   number: 8080
           - pathType: Prefix
-            path: /bar(/|$)(.*)
+            path: /(.*)
             backend:
               service:
                 name: webfrontend
