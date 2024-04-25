@@ -14,6 +14,7 @@ echo "GENERATE KUBERNETES FILES"
 # Ignoring helm errors
 aspirate generate --non-interactive -m ./manifest.json --skip-build --secret-password "$password" --image-pull-policy IfNotPresent --include-dashboard true -sh
 echo "INJECTING LOCAL CONFIG"
-sed -i "/resources:/a- external.yml" "kustomization.yml"
+mv external.yml aspirate-output/external.yml
+sed -i "/resources:/a- external.yml" "aspirate-output/kustomization.yml"
 echo "APPLYING CONFIG"
 aspirate apply --non-interactive --secret-password "$password" -k docker-desktop
