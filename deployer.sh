@@ -1,4 +1,6 @@
 #!/bin/sh
+export DOTNET_ROOT=/home/abdullah/.dotnet
+export PATH=$PATH:/home/abdullah/.dotnet:/home/abdullah/.dotnet/tools
 password=$ENV_KUBERNETES_PASSWORD
 cd AspireProject/AspireProject.AppHost
 aspirate build --non-interactive -m ./manifest.json
