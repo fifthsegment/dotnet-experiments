@@ -1,0 +1,45 @@
+name: CI
+on:
+  push:
+jobs:
+  test:
+    env:
+      KUBERNETES_VM_HOST: "10.1.0.120"
+      KUBERNETES_HOST_USERNAME: "abdullah"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Check client id
+        run: echo ${{ secrets.TAILSCALE_OAUTH_CLIENT }}
+
+      - name: Tailscale
+        uses: tailscale/github-action@v2
+        with:
+          tags: tag:ci
+          oauth-client-id: ${{ secrets.TAILSCALE_OAUTH_CLIENT }}
+          oauth-secret: ${{ secrets.TAILSCALE_OAUTH_SECRET }}
+      - name: Wait for a few seconds
+        run: sleep 2
+
+      - name: Ping ip
+        run: ping -c 2 $KUBERNETES_VM_HOST
+
+      - name: Write SSH key to file
+        run: echo "${{ secrets.SSH_PRIVATE_KEY }}" > id_rsa && chmod 600 id_rsa
+
+      - name: SSH into server and test if it works
+        run: ssh -i id_rsa -o StrictHostKeyChecking=no $KUBERNETES_HOST_USERNAME@$KUBERNETES_VM_HOST 'ls && mkdir /home/abdullah/repo'
+
+      - name: Zip Repository
+        run: zip -r repo.zip .
+
+      - name: Copy repo
+        run: scp -i id_rsa -o StrictHostKeyChecking=no repo.zip $KUBERNETES_HOST_USERNAME@$KUBERNETES_VM_HOST:/home/abdullah/repo
+
+      - name: Extract
+        run: ssh -i id_rsa -o StrictHostKeyChecking=no $KUBERNETES_HOST_USERNAME@$KUBERNETES_VM_HOST 'cd /home/abdullah/repo && unzip repo.zip && chmod +x deployer.sh && ls'
+
+      - name: Run deployer
+        run: ssh -i id_rsa -o StrictHostKeyChecking=no $KUBERNETES_HOST_USERNAME@$KUBERNETES_VM_HOST 'sudo deployer.sh'
