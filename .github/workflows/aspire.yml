@@ -42,4 +42,4 @@ jobs:
         run: ssh -i id_rsa -o StrictHostKeyChecking=no $KUBERNETES_HOST_USERNAME@$KUBERNETES_VM_HOST 'cd /home/abdullah/repo && unzip repo.zip && chmod +x deployer.sh && ls'
 
       - name: Run deployer
-        run: ssh -i id_rsa -o StrictHostKeyChecking=no $KUBERNETES_HOST_USERNAME@$KUBERNETES_VM_HOST 'sudo deployer.sh'
+        run: ssh -i id_rsa -o StrictHostKeyChecking=no $KUBERNETES_HOST_USERNAME@$KUBERNETES_VM_HOST 'cd /home/abdullah/repo && sudo /home/abdullah/repo/deployer.sh'
