@@ -9,6 +9,9 @@ echo "READING CREDENTIALS"
 echo "BUILD MANIFEST"
 aspirate build --non-interactive -m ./manifest.json
 echo "GENERATE KUBERNETES FILES"
-aspirate generate --non-interactive -m ./manifest.json --skip-build --secret-password "$password" --image-pull-policy IfNotPresent --include-dashboard true
+# Ignoring helm errors
+set +e
+aspirate generate --non-interactive -m ./manifest.json --skip-build --secret-password "$password" --image-pull-policy IfNotPresent --include-dashboard true -sh
+set -e
 echo "APPLYING CONFIG"
 aspirate apply --non-interactive --secret-password "$password" -k docker-desktop
