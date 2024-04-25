@@ -16,5 +16,7 @@ aspirate generate --non-interactive -m ./manifest.json --skip-build --secret-pas
 echo "INJECTING LOCAL CONFIG"
 mv external.yml aspirate-output/external.yml
 sed -i "/resources:/a- external.yml" "aspirate-output/kustomization.yml"
+echo "DELETING PODS"
+sudo kubectl delete pods --all
 echo "APPLYING CONFIG"
 aspirate apply --non-interactive --secret-password "$password" -k docker-desktop
