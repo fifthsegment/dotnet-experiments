@@ -23,4 +23,4 @@ spec:
               service:
                 name: webfrontend
                 port:
-                  number: 8443
+                  number: 8080
