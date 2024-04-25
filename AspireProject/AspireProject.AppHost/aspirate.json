@@ -1,0 +1,9 @@
+{
+    "TemplatePath": null,
+    "ContainerSettings": {
+      "Registry": "registry.hub.docker.com",
+      "RepositoryPrefix": "fifthsegment",
+      "Tag": "latest",
+      "Builder": "docker"
+    }
+  }
