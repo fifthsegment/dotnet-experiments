@@ -9,13 +9,13 @@ spec:
   rules:
     - http:
         paths:
-#          - pathType: Prefix
-#            path: /foo(/|$)(.*)
-#            backend:
-#              service:
-#                name: apiservice
-#                port:
-#                  number: 8080
+          - pathType: Prefix
+            path: /stats(/|$)(.*)
+            backend:
+              service:
+                name: aspire-dashboard
+                port:
+                  number: 1888
           - pathType: Prefix
             path: /
             backend:
