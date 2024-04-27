@@ -37,13 +37,20 @@ else
             }
         </tbody>
     </table>
+    
+    <p>@todoItem</p>
 }
 
 @code {
     private WeatherForecast[]? forecasts;
 
+    private object todoItem = null;
+
     protected override async Task OnInitializedAsync()
     {
         forecasts = await WeatherApi.GetWeatherAsync();
+        todoItem = await WeatherApi.GetTodos();
     }
+
+
 }

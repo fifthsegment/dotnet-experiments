@@ -2,6 +2,10 @@ namespace AspireProject.Web;
 
 public class WeatherApiClient(HttpClient httpClient)
 {
+    public async Task<object> GetTodos(CancellationToken cancellationToken = default) {
+        var output = await httpClient.GetAsync("/todos/1");
+        return output;
+    }
     public async Task<WeatherForecast[]> GetWeatherAsync(int maxItems = 10, CancellationToken cancellationToken = default)
     {
         List<WeatherForecast>? forecasts = null;
