@@ -13,6 +13,37 @@
         }
       }
     },
+    "pg": {
+      "type": "container.v0",
+      "connectionString": "Host={pg.bindings.tcp.host};Port={pg.bindings.tcp.port};Username=postgres;Password={pg-password.value}",
+      "image": "docker.io/library/postgres:16.2",
+      "bindMounts": [
+        {
+          "source": "../AspireProject.ApiService/data/postgres",
+          "target": "/docker-entrypoint-initdb.d",
+          "readOnly": false
+        }
+      ],
+      "env": {
+        "POSTGRES_HOST_AUTH_METHOD": "scram-sha-256",
+        "POSTGRES_INITDB_ARGS": "--auth-host=scram-sha-256 --auth-local=scram-sha-256",
+        "POSTGRES_USER": "postgres",
+        "POSTGRES_PASSWORD": "{pg-password.value}",
+        "POSTGRES_DB": "Todos"
+      },
+      "bindings": {
+        "tcp": {
+          "scheme": "tcp",
+          "protocol": "tcp",
+          "transport": "tcp",
+          "targetPort": 5432
+        }
+      }
+    },
+    "Todos": {
+      "type": "value.v0",
+      "connectionString": "{pg.connectionString};Database=Todos"
+    },
     "apiservice": {
       "type": "project.v0",
       "path": "../AspireProject.ApiService/AspireProject.ApiService.csproj",
@@ -20,7 +51,8 @@
         "OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EXCEPTION_LOG_ATTRIBUTES": "true",
         "OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EVENT_LOG_ATTRIBUTES": "true",
         "OTEL_DOTNET_EXPERIMENTAL_OTLP_RETRY": "in_memory",
-        "ASPNETCORE_FORWARDEDHEADERS_ENABLED": "true"
+        "ASPNETCORE_FORWARDEDHEADERS_ENABLED": "true",
+        "ConnectionStrings__Todos": "{Todos.connectionString}"
       },
       "bindings": {
         "http": {
@@ -45,7 +77,8 @@
         "ASPNETCORE_FORWARDEDHEADERS_ENABLED": "true",
         "ConnectionStrings__cache": "{cache.connectionString}",
         "services__apiservice__http__0": "{apiservice.bindings.http.url}",
-        "services__apiservice__https__0": "{apiservice.bindings.https.url}"
+        "services__apiservice__https__0": "{apiservice.bindings.https.url}",
+        "ConnectionStrings__Todos": "{Todos.connectionString}"
       },
       "bindings": {
         "http": {
@@ -59,6 +92,21 @@
           "protocol": "tcp",
           "transport": "http",
           "external": true
+        }
+      }
+    },
+    "pg-password": {
+      "type": "parameter.v0",
+      "value": "{pg-password.inputs.value}",
+      "inputs": {
+        "value": {
+          "type": "string",
+          "secret": true,
+          "default": {
+            "generate": {
+              "minLength": 22
+            }
+          }
         }
       }
     }
