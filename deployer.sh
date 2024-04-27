@@ -12,7 +12,7 @@ echo "BUILD MANIFEST"
 aspirate build --non-interactive -m ./manifest.json
 echo "GENERATE KUBERNETES FILES"
 # Ignoring helm errors
-aspirate generate --non-interactive -m ./manifest.json --skip-build --secret-password "$password" --image-pull-policy Always --include-dashboard true -sh
+#aspirate generate --non-interactive -m ./manifest.json --skip-build --secret-password "$password" --image-pull-policy Always --include-dashboard true -sh
 echo "INJECTING LOCAL CONFIG"
 mv external.yml aspirate-output/external.yml
 sed -i "/resources:/a- external.yml" "aspirate-output/kustomization.yml"

@@ -1,0 +1,30 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pg
+spec:
+  minReadySeconds: 60
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pg
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: pg
+    spec:
+      containers:
+      - name: pg
+        image: docker.io/library/postgres:16.2
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 5432
+        envFrom:
+        - configMapRef:
+            name: pg-env
+        - secretRef:
+            name: pg-secrets
+      terminationGracePeriodSeconds: 180
