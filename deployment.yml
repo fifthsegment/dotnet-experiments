@@ -10,15 +10,15 @@ spec:
   rules:
     - http:
         paths:
+#          - pathType: Prefix
+#            path: /foo(/|$)(.*)
+#            backend:
+#              service:
+#                name: apiservice
+#                port:
+#                  number: 8080
           - pathType: Prefix
-            path: /foo(/|$)(.*)
-            backend:
-              service:
-                name: apiservice
-                port:
-                  number: 8080
-          - pathType: Prefix
-            path: /(.*)
+            path: /
             backend:
               service:
                 name: webfrontend
