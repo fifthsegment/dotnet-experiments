@@ -33,6 +33,24 @@ app.MapGet("/weatherforecast", () =>
     return forecast;
 });
 
+app.MapGet("/todos", async (NpgsqlConnection db) =>
+{
+    const string sql = @"
+        SELECT Id, Title, IsComplete
+        FROM Todos";
+
+    var todos = await db.QueryAsync<Todo>(sql);
+    if (todos != null && todos.Any())
+    {
+        return Results.Ok(todos);
+    }
+    else
+    {
+        return Results.NotFound();
+    }
+});
+
+
 app.MapGet("/todos/{id}", async (int id, NpgsqlConnection db) =>
 {
     const string sql = """
