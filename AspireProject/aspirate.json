@@ -1,9 +1,0 @@
-{
-  "TemplatePath": null,
-  "ContainerSettings": {
-    "Registry": null,
-    "RepositoryPrefix": "ai",
-    "Tag": null,
-    "Builder": "docker"
-  }
-}

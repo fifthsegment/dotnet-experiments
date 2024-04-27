@@ -18,5 +18,6 @@ mv external.yml aspirate-output/external.yml
 sed -i "/resources:/a- external.yml" "aspirate-output/kustomization.yml"
 echo "DELETING PODS"
 sudo kubectl delete pods --all
+#sudo kubectl delete --all deployments
 echo "APPLYING CONFIG"
 aspirate apply --non-interactive --secret-password "$password" -k docker-desktop
