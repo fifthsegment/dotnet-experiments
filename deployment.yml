@@ -10,16 +10,16 @@ spec:
     - http:
         paths:
           - pathType: Prefix
-            path: /api
+            path: /
             backend:
               service:
                 name: apiservice
                 port:
                   number: 8080
-          - pathType: Prefix
-            path: /frontend
-            backend:
-              service:
-                name: webfrontend
-                port:
-                  number: 8080
+          # - pathType: Prefix
+          #   path: /
+          #   backend:
+          #     service:
+          #       name: webfrontend
+          #       port:
+          #         number: 8080
