@@ -10,12 +10,12 @@ spec:
     - http:
         paths:
           - pathType: Prefix
-            path: /stats(/|$)(.*)
+            path: /api
             backend:
               service:
-                name: aspire-dashboard
+                name: apiservice
                 port:
-                  number: 1888
+                  number: 8080
           - pathType: Prefix
             path: /
             backend:
