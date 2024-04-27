@@ -19,5 +19,6 @@ sed -i "/resources:/a- external.yml" "aspirate-output/kustomization.yml"
 echo "DELETING PODS"
 sudo kubectl delete pods --all
 #sudo kubectl delete --all deployments
+kubectl delete deployment --all --namespace=default
 echo "APPLYING CONFIG"
 aspirate apply --non-interactive --secret-password "$password" -k docker-desktop
