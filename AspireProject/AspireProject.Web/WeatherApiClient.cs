@@ -1,10 +1,25 @@
+
 namespace AspireProject.Web;
 
 public class WeatherApiClient(HttpClient httpClient)
 {
-    public async Task<object> GetTodos(CancellationToken cancellationToken = default) {
-        var output = await httpClient.GetAsync("/todos/1");
-        return output;
+    public async Task<Todo[]> GetTodosAsync(int maxItems = 10, CancellationToken cancellationToken = default) {
+        List<Todo>? todos = null;
+
+        await foreach (var todo in httpClient.GetFromJsonAsAsyncEnumerable<Todo>("/todos", cancellationToken))
+        {
+            if (todos?.Count >= maxItems)
+            {
+                break;
+            }
+            if (todo is not null)
+            {
+                todos ??= [];
+                todos.Add(todo);
+            }
+        }
+
+        return todos?.ToArray() ?? [];
     }
     public async Task<WeatherForecast[]> GetWeatherAsync(int maxItems = 10, CancellationToken cancellationToken = default)
     {
@@ -30,4 +45,8 @@ public class WeatherApiClient(HttpClient httpClient)
 public record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
 {
     public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
+}
+
+public record Todo(int Id, string Title, bool IsComplete) {
+
 }

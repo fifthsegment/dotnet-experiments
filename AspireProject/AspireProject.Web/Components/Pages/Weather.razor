@@ -26,6 +26,7 @@ else
             </tr>
         </thead>
         <tbody>
+
             @foreach (var forecast in forecasts)
             {
                 <tr>
@@ -37,19 +38,37 @@ else
             }
         </tbody>
     </table>
-    
-    <p>@todoItem</p>
+
+    <h2>Todo Items List</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Title</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (todoItems != null)
+            {
+                @foreach (var todo in todoItems)
+                {
+                    <tr>
+                        <td>Title: @todo.Title</td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
 }
 
 @code {
     private WeatherForecast[]? forecasts;
 
-    private object todoItem = null;
+    private Todo[]? todoItems;
 
     protected override async Task OnInitializedAsync()
     {
         forecasts = await WeatherApi.GetWeatherAsync();
-        todoItem = await WeatherApi.GetTodos();
+        todoItems = await WeatherApi.GetTodosAsync();
     }
 
 
