@@ -19,7 +19,7 @@ spec:
       containers:
       - name: webfrontend
         image: localhost:5001/webfrontend:latest
-        imagePullPolicy: IfNotPresent
+        imagePullPolicy: Always
         ports:
         - containerPort: 8080
         - containerPort: 8443

@@ -1,12 +1,17 @@
 using Npgsql;
 using Dapper;
+using Microsoft.EntityFrameworkCore;
+using AspireProject.ApiService;
 
 var builder = WebApplication.CreateBuilder(args);
+// string connString = builder.Configuration.GetConnectionString("ConnectionStrings__Todos");
 
 // Add service defaults & Aspire components.
 builder.AddServiceDefaults();
 
-builder.AddNpgsqlDataSource("Todos");
+
+// builder.AddNpgsqlDataSource("Todos");
+builder.AddNpgsqlDbContext<AspireDbContext>("Todos");
 // Add services to the container.
 builder.Services.AddProblemDetails();
 
@@ -33,35 +38,25 @@ app.MapGet("/weatherforecast", () =>
     return forecast;
 });
 
-app.MapGet("/todos", async (NpgsqlConnection db) =>
+app.MapGet("/todos", async ( AspireDbContext context) =>
 {
-    const string sql = @"
-        SELECT Id, Title, IsComplete
-        FROM Todos";
-
-    var todos = await db.QueryAsync<Todo>(sql);
-    if (todos != null && todos.Any())
-    {
-        return Results.Ok(todos);
-    }
-    else
+    var todo = await context.Todos.ToListAsync();
+    if (todo == null)
     {
         return Results.NotFound();
     }
+    return Results.Ok(todo);
 });
 
 
-app.MapGet("/todos/{id}", async (int id, NpgsqlConnection db) =>
+app.MapGet("/todos/{id}", async (int id, AspireDbContext context) =>
 {
-    const string sql = """
-        SELECT Id, Title, IsComplete
-        FROM Todos
-        WHERE Id = @id
-        """;
-    
-    return await db.QueryFirstOrDefaultAsync<Todo>(sql, new { id }) is { } todo
-        ? Results.Ok(todo)
-        : Results.NotFound();
+    var todo = await context.Todos.FindAsync(id);
+    if (todo == null)
+    {
+        return Results.NotFound();
+    }
+    return Results.Ok(todo);
 });
 
 app.MapDefaultEndpoints();
@@ -73,4 +68,3 @@ record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
     public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
 }
 
-public record Todo(int Id, string Title, bool IsComplete);
