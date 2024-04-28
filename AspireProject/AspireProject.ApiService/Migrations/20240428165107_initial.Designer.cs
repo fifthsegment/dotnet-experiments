@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AspireProject.ApiService.Migrations
 {
     [DbContext(typeof(AspireDbContext))]
-    [Migration("20240428161327_initial")]
+    [Migration("20240428165107_initial")]
     partial class initial
     {
         /// <inheritdoc />
@@ -32,7 +32,6 @@ namespace AspireProject.ApiService.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<string>("Title")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");

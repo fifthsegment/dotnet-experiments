@@ -20,6 +20,13 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 app.UseExceptionHandler();
 
+using (var scope = app.Services.CreateScope())
+    {
+        var db = scope.ServiceProvider.GetRequiredService<AspireDbContext>();
+        db.Database.Migrate();
+    }
+
+
 var summaries = new[]
 {
     "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
@@ -49,12 +56,12 @@ app.MapGet("/todos", async ( AspireDbContext context) =>
 });
 
 
-app.MapGet("/todos/{id}", async (int id, AspireDbContext context) =>
+app.MapGet("/todos/{externalId}", async (string externalId, AspireDbContext context) =>
 {
-    var todo = await context.Todos.FindAsync(id);
+    var todo = await context.Todos.FirstOrDefaultAsync(t => t.ExternalId == externalId);
     if (todo == null)
     {
-        return Results.NotFound();
+        return Results.NotFound($"Todo with external ID '{externalId}' not found.");
     }
     return Results.Ok(todo);
 });
