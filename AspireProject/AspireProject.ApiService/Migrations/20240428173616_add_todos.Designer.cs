@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AspireProject.ApiService.Migrations
 {
     [DbContext(typeof(AspireDbContext))]
-    [Migration("20240428165107_initial")]
-    partial class initial
+    [Migration("20240428173616_add_todos")]
+    partial class add_todos
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -30,6 +30,10 @@ namespace AspireProject.ApiService.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
+
+                    b.Property<string>("ExternalId")
+                        .IsRequired()
+                        .HasColumnType("varchar(100)");
 
                     b.Property<string>("Title")
                         .HasColumnType("text");

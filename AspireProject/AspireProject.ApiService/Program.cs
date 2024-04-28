@@ -1,10 +1,7 @@
-using Npgsql;
-using Dapper;
 using Microsoft.EntityFrameworkCore;
 using AspireProject.ApiService;
 
 var builder = WebApplication.CreateBuilder(args);
-// string connString = builder.Configuration.GetConnectionString("ConnectionStrings__Todos");
 
 // Add service defaults & Aspire components.
 builder.AddServiceDefaults();
@@ -17,14 +14,13 @@ builder.Services.AddProblemDetails();
 
 var app = builder.Build();
 
+// var db = app.Services.GetService<AspireDbContext>();
+// db.Database.Migrate();
+
 // Configure the HTTP request pipeline.
 app.UseExceptionHandler();
 
-using (var scope = app.Services.CreateScope())
-    {
-        var db = scope.ServiceProvider.GetRequiredService<AspireDbContext>();
-        db.Database.Migrate();
-    }
+
 
 
 var summaries = new[]
@@ -68,7 +64,15 @@ app.MapGet("/todos/{externalId}", async (string externalId, AspireDbContext cont
 
 app.MapDefaultEndpoints();
 
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<AspireDbContext>();
+    db.Database.Migrate();
+}
+
 app.Run();
+
+
 
 record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
 {

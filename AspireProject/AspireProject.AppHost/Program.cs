@@ -8,6 +8,8 @@ var postgresdb = builder.AddPostgres("pg")
                 .WithBindMount("../AspireProject.ApiService/data/postgres", "/docker-entrypoint-initdb.d")
                 .AddDatabase(dbName);
 
+
+
 var apiService = builder.AddProject<Projects.AspireProject_ApiService>("apiservice").WithReference(postgresdb);
 
 

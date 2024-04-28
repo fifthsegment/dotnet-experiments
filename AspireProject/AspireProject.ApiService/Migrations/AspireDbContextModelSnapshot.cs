@@ -28,6 +28,10 @@ namespace AspireProject.ApiService.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<string>("ExternalId")
+                        .IsRequired()
+                        .HasColumnType("varchar(100)");
+
                     b.Property<string>("Title")
                         .HasColumnType("text");
 
