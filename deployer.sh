@@ -16,7 +16,9 @@ echo "GENERATE KUBERNETES FILES"
 echo "INJECTING LOCAL CONFIG"
 mv external.yml aspirate-output/external.yml
 sed -i "/resources:/a- external.yml" "aspirate-output/kustomization.yml"
-#echo "DELETING PODS"
+echo "DELETING PODS"
+kubectl delete pods -l app=webfrontend
+kubectl delete pods -l app=apiservice
 #sudo kubectl delete pods --all
 #kubectl delete deployment --all --namespace=default
 echo "APPLYING CONFIG"
