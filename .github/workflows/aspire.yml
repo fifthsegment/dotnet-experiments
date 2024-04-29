@@ -2,7 +2,7 @@ name: CI
 on:
   push:
 jobs:
-  test:
+  deploy:
     env:
       KUBERNETES_VM_HOST: "10.1.0.120"
       KUBERNETES_HOST_USERNAME: "abdullah"
