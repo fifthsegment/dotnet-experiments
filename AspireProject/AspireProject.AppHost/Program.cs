@@ -10,13 +10,13 @@ var postgresdb = builder.AddPostgres("pg")
 
 
 
-var apiService = builder.AddProject<Projects.AspireProject_ApiService>("apiservice").WithReference(postgresdb);
-
-
+var apiService = builder.AddProject<Projects.AspireProject_ApiService>("apiservice")
+                .WithReference(postgresdb);
 
 builder.AddProject<Projects.AspireProject_Web>("webfrontend")
     .WithExternalHttpEndpoints()
     .WithReference(cache)
-    .WithReference(apiService).WithReference(postgresdb);
+    .WithReference(apiService)
+    .WithReference(postgresdb);
     
 builder.Build().Run();

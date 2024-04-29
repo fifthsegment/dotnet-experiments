@@ -1,6 +1,9 @@
 ﻿@page "/weather"
-@attribute [StreamRendering(true)]
-@attribute [OutputCache(Duration = 5)]
+@* @attribute [StreamRendering(true)] *@
+@* @attribute [OutputCache(Duration = 5)] *@
+@rendermode InteractiveServer
+
+@inject ILogger<Weather> logger
 
 @inject WeatherApiClient WeatherApi
 
@@ -40,6 +43,18 @@ else
     </table>
 
     <h2>Todo Items List</h2>
+    <h2>Add New Todo</h2>
+    <label for="newTodoTitle">Title</label>
+    <input id="newTodoTitle" @bind="newTodoTitle"/>
+    <button @onclick="AddTodo">Add</button>
+    <button class="btn btn-primary" @onclick="AddTodo">Click me</button>
+
+    <br />
+    <div>
+        @* adding item with title *@
+        @newTodoTitle
+    </div>
+    
     <table class="table">
         <thead>
             <tr>
@@ -65,11 +80,35 @@ else
 
     private Todo[]? todoItems;
 
+    private string newTodoTitle = "NEW ITEM";
+
     protected override async Task OnInitializedAsync()
     {
+        logger.LogInformation("Loading weather data");
+        Console.WriteLine("Loading weather");
         forecasts = await WeatherApi.GetWeatherAsync();
         todoItems = await WeatherApi.GetTodosAsync();
     }
 
+    private async Task AddTodo()
+    {
+        logger.LogInformation("Adding a todo");
 
+        if (!string.IsNullOrWhiteSpace(newTodoTitle))
+        {
+            var randomString = Guid.NewGuid().ToString();
+            var todo = new Todo(new Guid(), newTodoTitle, randomString);
+            
+            // Call your API to add the new todo
+            logger.LogInformation("Adding todo with title: {Title}", newTodoTitle);
+            await WeatherApi.AddTodoAsync(todo);
+
+            // log json object
+            logger.LogInformation("Adding todo with data: {todo}", todo);
+
+            newTodoTitle = ""; // Clear the input field
+            todoItems = await WeatherApi.GetTodosAsync(); // Refresh the todo list
+        }
+        
+    }
 }

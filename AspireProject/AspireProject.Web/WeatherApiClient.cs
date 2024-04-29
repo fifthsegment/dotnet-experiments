@@ -1,7 +1,9 @@
 
+using System.Text.Json.Serialization;
+
 namespace AspireProject.Web;
 
-public class WeatherApiClient(HttpClient httpClient)
+public class WeatherApiClient(HttpClient httpClient, ILogger<WeatherApiClient> logger)
 {
     public async Task<Todo[]> GetTodosAsync(int maxItems = 10, CancellationToken cancellationToken = default) {
         List<Todo>? todos = null;
@@ -20,6 +22,13 @@ public class WeatherApiClient(HttpClient httpClient)
         }
 
         return todos?.ToArray() ?? [];
+    }
+
+    public async Task AddTodoAsync(Todo newTodo, CancellationToken cancellationToken = default)
+    {
+        logger.LogInformation("Frontend : Sending request to create a new todo.");
+        var response = await httpClient.PostAsJsonAsync("/todos", newTodo, cancellationToken);
+        response.EnsureSuccessStatusCode();
     }
     public async Task<WeatherForecast[]> GetWeatherAsync(int maxItems = 10, CancellationToken cancellationToken = default)
     {
@@ -47,6 +56,23 @@ public record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
     public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
 }
 
-public record Todo(Guid Id, string Title) {
+public record Todo
+{
+    [JsonPropertyName("Id")]
+    public Guid Id { get; init; }
+    
+    [JsonPropertyName("Title")]
+    public string Title { get; init; }
+    
+    [JsonPropertyName("ExternalId")]
+    public string ExternalId { get; init; }
 
+    [JsonConstructor]
+    public Todo(Guid id, string title, string externalId)
+    {
+        Id = id;
+        Title = title;
+        ExternalId = externalId;
+    }
 }
+
